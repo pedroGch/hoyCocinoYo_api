@@ -1,9 +1,9 @@
 import { MongoClient, ObjectId } from 'mongodb'
+import 'dotenv/config'
 
-
-const cliente = new MongoClient('mongodb://127.0.0.1:27017')
-const db = cliente.db("AH_PARCIAL2")
-const recetaCollection = db.collection("recetas")
+const cliente = new MongoClient( process.env.MONGO_DB_URL)
+const db = cliente.db(process.env.DB_NAME)
+const recetaCollection = db.collection(process.env.RECETA_COLLECTION)
 
 /**
  * Retorna todas las recetas de la base de datos
