@@ -5,7 +5,7 @@ import {recetas, recetaId, nuevaReceta, editar, borrar} from "../controllers/rec
 export const routerRecetas = express()
 
 routerRecetas.get('/:id', recetas)
-routerRecetas.get('/todasLasRecetas', recetaId)
+routerRecetas.get('/todas', recetaId)
 routerRecetas.post('/crear',[valRecetaCrear], nuevaReceta)
 routerRecetas.put('/:id/editar', editar)
 routerRecetas.delete('/:id/borrar', borrar)
