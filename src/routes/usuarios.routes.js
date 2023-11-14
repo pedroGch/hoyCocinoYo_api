@@ -1,5 +1,5 @@
 import express from 'express'
-import {checkAuth} from '../middlewares/auth.middlewares.js'
+import {checkAuth} from '../middlewares/auth.middleware.js'
 import {iniciarSesion,registrarUsuario,desloguear} from "../controllers/usuarios.controllers.js"
 
 export const routerUsuarios = express()
