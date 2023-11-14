@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'
-import {crearUsuario} from '../services/usuarios.services'
+import {crearUsuario} from '../services/usuarios.services.js'
 
 export  async function registrarUsuario (req, res) {
   const {username, password, lastName, firstName, email} = req.body
