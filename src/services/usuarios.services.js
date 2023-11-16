@@ -1,4 +1,5 @@
 import { MongoClient, ObjectId } from 'mongodb'
+import bcrypt from 'bcryptjs'
 import 'dotenv/config'
 
 const cliente = new MongoClient( process.env.MONGO_DB_URL)
@@ -13,23 +14,14 @@ const usuarioCollection = db.collection(process.env.USUARIO_COLLECTION)
  */
 export async function crearUsuario(data){
   await cliente.connect()
+  const hashedPassword = bcrypt.hashSync(data.password, parseInt(process.env.HASNUMBER))
+  data.password = hashedPassword
   return await usuarioCollection.insertOne({_id: new ObjectId(), ...data})
 }
 
-/**
- * 
- * @param {*} user 
- * @returns {}
- */
-export async function obtenerUsuario (user){
-  await cliente.connect()
-  return await usuarioCollection.findOne({username: user.username, password: user.password})
-}
-
-
 export async function obtenerPorUsername (username){
   await cliente.connect()
-  return await usuarioCollection.findOne({userName: username})
+  return await usuarioCollection.findOne({username: username})
 }
 
 export async function obtenerPorEmail (email){
