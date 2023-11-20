@@ -1,10 +1,12 @@
 import { MongoClient, ObjectId } from 'mongodb'
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 
 const cliente = new MongoClient( process.env.MONGO_DB_URL)
 const db = cliente.db(process.env.DB_NAME)
 const usuarioCollection = db.collection(process.env.USUARIO_COLLECTION)
+const tokenCollection = db.collection(process.env.TOKEN_COLLECTION)
 
 
 /**
@@ -16,15 +18,96 @@ export async function crearUsuario(data){
   await cliente.connect()
   const hashedPassword = bcrypt.hashSync(data.password, parseInt(process.env.HASNUMBER))
   data.password = hashedPassword
-  return await usuarioCollection.insertOne({_id: new ObjectId(), ...data})
+  const usuarioNuevo =  await usuarioCollection.insertOne({_id: new ObjectId(), ...data})
+  return {...usuarioNuevo, password: undefined}
 }
 
+/**
+ * 
+ * @param {*} username 
+ * @returns {}
+ */
 export async function obtenerPorUsername (username){
   await cliente.connect()
   return await usuarioCollection.findOne({username: username})
 }
 
+/**
+ * 
+ * @param {*} email 
+ * @returns {}
+ */
 export async function obtenerPorEmail (email){
   await cliente.connect()
   return await usuarioCollection.findOne({email: email})
+}
+
+/**
+ * 
+ * @param {*} data 
+ * @returns {}
+ */
+export async function iniciarSesion(data) {
+  const usuario = await verificarCuenta(data)
+  const token = await crearToken({...data, password: undefined})
+
+  return {
+    ...usuario,
+    token: token
+  }
+}
+
+/**
+ * 
+ * @param {*} token 
+ * @returns 
+ */
+export async function verificarToken(token) {
+  await cliente.connect()
+  const payload = jwt.verify(token, process.env.SECRETKEY)
+  if (!await tokenCollection.findOne({ token: token})){
+    throw {msg: 'este token no es valido'}
+  }
+  return payload
+}
+
+/**
+ * 
+ * @param {*} cuenta 
+ * @returns {}
+ */
+export async function verificarCuenta(cuenta){
+  await cliente.connect()
+  let cuentaExiste = await obtenerPorUsername(cuenta.username)
+
+  if (!cuentaExiste){
+    throw {msg:'usuario o contraseña incorrecto'}
+  }
+
+  if (!bcrypt.compareSync( cuenta.password, cuentaExiste.password)){
+    throw {msg:'usuario o contraseña incorrecto'}
+  }
+  return {...cuenta, password: undefined}
+}
+
+/**
+ * 
+ * @param {*} cuenta 
+ * @returns String
+ */
+async function crearToken(cuenta) {
+  await cliente.connect()
+  const token = jwt.sign(cuenta, process.env.SECRETKEY, {expiresIn:86400})
+  tokenCollection.insertOne({token, username: cuenta.username})
+  return token
+
+}
+
+/**
+ * 
+ * @param {*} token 
+ */
+export async function eliminarSesion(token){
+  await cliente.connect()
+  tokenCollection.deleteOne({toke: token})
 }

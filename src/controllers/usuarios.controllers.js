@@ -4,50 +4,47 @@ import 'dotenv/config'
 import {
   crearUsuario, 
   obtenerPorUsername, 
-  obtenerPorEmail
+  obtenerPorEmail,
+  iniciarSesion
 } from '../services/usuarios.services.js'
 
 export  async function registrarUsuario (req, res) {
   const {username, password, lastName, firstName, email} = req.body
-  
-  
-  
-  const inserted = await crearUsuario(
-    {
-      userName:username, 
-      password:password, 
-      lastName, 
-      firstName, 
-      email
-    }
-  );
-  
-  const token = jwt.sign({id: inserted.id}, process.env.SECRETKEY, {expiresIn:86400})
-  res.status(201).json({ token: token  })
+  const inserted = await crearUsuario({
+    username:username, 
+    password:password, 
+    lastName, 
+    firstName, 
+    email
+  });
+  if (inserted.password == undefined){
+    res.status(201).json(inserted)
+  }else{
+    res.status(400).send('no se pudo crear el nuevo usuario')
+  }
+
 }
 
-export  async function iniciarSesion (req, res) {
-  const usuario = await obtenerPorUsername(req.usuario)
-  const passwordIsValid = bcrypt.compareSync( req.body.password, usuario.password)
-  
-  if (!usuario){
-    res.status(404).send({message: 'Usuario o contraseña incorrecta'})
-  }
-
-  if (!passwordIsValid){
-    res.status(401).send({message: 'Datos incorrectos '})
-  }
-  
-  const token = jwt.sign({id: usuario.id}, process.env.SECRETKEY, {expiresIn:86400})
-  
-  res.status(200).send({ 
-    id: usuario.id ,
-    username: usuario.userName,
-    token: token 
-  })
+export  async function iniciarSesionUsuario (req, res) {
+  console.log(req.body);
+  iniciarSesion(req.body)
+    .then(usuario =>{
+      res.status(200).json(usuario)
+    })
+    .catch(err =>{
+      res.status(500).json(err)
+    })
 }
 
 export  async function desloguear (req, res) {
+  eliminarSesion(req.headers['x-acces-token'])
+  .then(respuesta =>{
+    console.log(respuesta)
+    res.status(200).json(respuesta)
+  })
+  .catch(err =>{
+    res.status(500).json(err)
+  })
 }
 
 export async function nombreDeUsuarioExiste (nombreDeUsuario) {
