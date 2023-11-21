@@ -7,14 +7,13 @@ export  function checkAuth  (req, res, next){
     res.status(404).json({'message': 'No se registra token'})
   }
   else{
-    try {
-      verificarToken(token)
-        .then((payload) =>{
-          req.session = payload
-          next()
-        })
-    } catch (error) {
-      res.status(500).send('Error en el sevidor')
-    }
-  }
+    verificarToken(token)
+      .then((payload) =>{
+        req.session = payload
+        next()
+      })
+      .catch (err => {
+        res.status(500).json(err)
+      }) 
+  } 
 }

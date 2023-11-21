@@ -5,9 +5,10 @@ import {recetas, recetaId, nuevaReceta, editar, borrar} from "../controllers/rec
 
 export const routerRecetas = express()
 
-routerRecetas.get('/:id', recetas)
-routerRecetas.get('/todas', recetaId)
+routerRecetas.get('/todas', recetas)
+routerRecetas.get('/:id', recetaId)
 routerRecetas.post('/crear',[checkAuth],[valRecetaCrear], nuevaReceta)
-routerRecetas.put('/:id/editar', editar)
-routerRecetas.delete('/:id/borrar', borrar)
+routerRecetas.put('/:id/editar',[checkAuth] ,editar)
+routerRecetas.delete('/:id/borrar',[checkAuth] ,borrar)
+routerRecetas.get('/:id/borrar',[checkAuth] ,borrar)
 

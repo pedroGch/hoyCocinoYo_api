@@ -18,8 +18,6 @@ export function valUsuariRegistro(req, res, next){
     abortEarly: false
   })
   .then(async function (usuario) {
-
-    req.body = usuario
     next()
   })
   .catch(function (err) {

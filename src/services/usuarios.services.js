@@ -65,7 +65,11 @@ export async function iniciarSesion(data) {
 export async function verificarToken(token) {
   await cliente.connect()
   const payload = jwt.verify(token, process.env.SECRETKEY)
-  if (!await tokenCollection.findOne({ token: token})){
+  console.log(`este es mi token: ${token}`);
+  console.log(`este es mi payload: ${payload}`);
+  const eliminado = await tokenCollection.findOne({ token: token })
+  console.log(`se elimino? ${eliminado}`);
+  if (eliminado == null){
     throw {msg: 'este token no es valido'}
   }
   return payload
@@ -108,6 +112,7 @@ async function crearToken(cuenta) {
  * @param {*} token 
  */
 export async function eliminarSesion(token){
+
   await cliente.connect()
-  tokenCollection.deleteOne({toke: token})
+  return await tokenCollection.deleteOne({token: token})
 }

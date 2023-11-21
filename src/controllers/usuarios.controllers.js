@@ -5,6 +5,7 @@ import {
   crearUsuario, 
   obtenerPorUsername, 
   obtenerPorEmail,
+  eliminarSesion,
   iniciarSesion
 } from '../services/usuarios.services.js'
 
@@ -26,7 +27,7 @@ export  async function registrarUsuario (req, res) {
 }
 
 export  async function iniciarSesionUsuario (req, res) {
-  console.log(req.body);
+
   iniciarSesion(req.body)
     .then(usuario =>{
       res.status(200).json(usuario)
@@ -39,7 +40,7 @@ export  async function iniciarSesionUsuario (req, res) {
 export  async function desloguear (req, res) {
   eliminarSesion(req.headers['x-acces-token'])
   .then(respuesta =>{
-    console.log(respuesta)
+
     res.status(200).json(respuesta)
   })
   .catch(err =>{

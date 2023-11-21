@@ -6,11 +6,10 @@ import {iniciarSesionUsuario,registrarUsuario,desloguear} from "../controllers/u
 
 export const routerUsuarios = express()
 
-//routerUsuarios.post('/iniciar-sesion', [usuarioContrasenia], iniciarSesionUsuario)
-routerUsuarios.post('/iniciar-sesion', iniciarSesionUsuario)
+routerUsuarios.post('/iniciar-sesion', [usuarioContrasenia], iniciarSesionUsuario)
 routerUsuarios.post('/registrar',[valUsuariRegistro],[emailExiste], [usernameExiste], registrarUsuario)
 
-routerUsuarios.post('/desloguear ', desloguear) 
+routerUsuarios.post('/cerrar-sesion',[checkAuth] ,desloguear) 
 
 
 
