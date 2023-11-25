@@ -1,6 +1,15 @@
-export function usuarioContrasenia (req, res, next){
-  if (!req.body.username || !req.body.password){
-    res.status(400).send({message:"Datos incompletos"})
-  }
-  next()
+import {inicioSesionSchema} from "../schemas/sesion.schemas.js"
+
+export function valInicioSesion(req, res, next){
+
+  inicioSesionSchema.validate(req.body,{
+    stripUnknown: true,
+    abortEarly: false
+  })
+  .then(async function (sesion) {
+    next()
+  })
+  .catch(function (err) {
+    res.status(400).json(err)
+  })
 }

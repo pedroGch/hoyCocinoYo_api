@@ -4,7 +4,6 @@ import {todasLasRecetas, recetaPorId, crearReceta, editarReceta, borrarReceta} f
 export function recetas(req, res) {
   todasLasRecetas()
     .then( recetas => {
-      console.log(recetas);
       res.status(200).json(recetas)
     })
     .catch(err => {

@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 
-const cliente = new MongoClient( process.env.MONGO_DB_URL)
+const cliente = new MongoClient( process.env.MONGO_DB_URL_PROD)
 const db = cliente.db(process.env.DB_NAME)
 const usuarioCollection = db.collection(process.env.USUARIO_COLLECTION)
 const tokenCollection = db.collection(process.env.TOKEN_COLLECTION)
@@ -65,10 +65,7 @@ export async function iniciarSesion(data) {
 export async function verificarToken(token) {
   await cliente.connect()
   const payload = jwt.verify(token, process.env.SECRETKEY)
-  console.log(`este es mi token: ${token}`);
-  console.log(`este es mi payload: ${payload}`);
   const eliminado = await tokenCollection.findOne({ token: token })
-  console.log(`se elimino? ${eliminado}`);
   if (eliminado == null){
     throw {msg: 'este token no es valido'}
   }
@@ -82,7 +79,7 @@ export async function verificarToken(token) {
  */
 export async function verificarCuenta(cuenta){
   await cliente.connect()
-  let cuentaExiste = await obtenerPorUsername(cuenta.username)
+  let cuentaExiste = await obtenerPorEmail(cuenta.email)
 
   if (!cuentaExiste){
     throw {msg:'usuario o contraseña incorrecto'}

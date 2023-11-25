@@ -1,7 +1,7 @@
 import { MongoClient, ObjectId } from 'mongodb'
 import 'dotenv/config'
 
-const cliente = new MongoClient( process.env.MONGO_DB_URL)
+const cliente = new MongoClient( process.env.MONGO_DB_URL_PROD)
 const db = cliente.db(process.env.DB_NAME)
 const recetaCollection = db.collection(process.env.RECETA_COLLECTION)
 
