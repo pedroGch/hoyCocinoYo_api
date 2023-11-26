@@ -10,12 +10,10 @@ import {
 } from '../services/usuarios.services.js'
 
 export  async function registrarUsuario (req, res) {
-  const {username, password, lastName, firstName, email} = req.body
+  const {username, password, email} = req.body
   const inserted = await crearUsuario({
     username:username, 
     password:password, 
-    lastName, 
-    firstName, 
     email
   });
   if (inserted.password == undefined){
