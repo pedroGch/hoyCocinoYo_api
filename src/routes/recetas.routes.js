@@ -10,5 +10,5 @@ routerRecetas.get('/:id', recetaId)
 routerRecetas.post('/crear',[checkAuth],[valRecetaCrear], nuevaReceta)
 routerRecetas.put('/:id/editar',[checkAuth] ,editar)
 routerRecetas.delete('/:id/borrar',[checkAuth] ,borrar)
-routerRecetas.get('/:id/borrar',[checkAuth] ,borrar)
+
 
