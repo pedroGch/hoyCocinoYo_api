@@ -88,7 +88,7 @@ export async function verificarCuenta(cuenta){
   if (!bcrypt.compareSync( cuenta.password, cuentaExiste.password)){
     throw {msg:'usuario o contraseña incorrecto'}
   }
-  return {...cuenta, password: undefined}
+  return {...cuentaExiste, password: undefined}
 }
 
 /**
