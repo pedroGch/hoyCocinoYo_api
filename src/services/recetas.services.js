@@ -25,7 +25,17 @@ export async function recetaPorId(id) {
 }
 
 /**
- * 
+ * Muestra todas las recetas de un usuario
+ * @param {*} id 
+ * @returns 
+ */
+export async function recetasPorUsuarioServicio(id) {
+  await cliente.connect()
+  return await recetaCollection.find({id_usuario: id}).toArray()
+}
+
+/**
+ * Crea una receta
  * @param {*} data 
  * @returns {}
  */

@@ -1,4 +1,4 @@
-import {todasLasRecetas, recetaPorId, crearReceta, editarReceta, borrarReceta} from "../services/recetas.services.js"
+import {todasLasRecetas, recetaPorId, crearReceta, editarReceta, borrarReceta, recetasPorUsuarioServicio} from "../services/recetas.services.js"
 
 
 export function recetas(req, res) {
@@ -16,6 +16,16 @@ export async function recetaId(req, res) {
   recetaPorId(req.params.id)
   .then( receta => {
     res.status(200).json(receta)
+  })
+  .catch(err => {
+    res.status(500).send(err.message)
+  })
+}
+
+export async function recetasPorUsuario (req, res) {
+  recetasPorUsuarioServicio(req.params.id)
+  .then( recetas => {
+    res.status(200).json(recetas)
   })
   .catch(err => {
     res.status(500).send(err.message)

@@ -46,6 +46,7 @@ export  async function desloguear (req, res) {
   })
 }
 
+
 export async function nombreDeUsuarioExiste (nombreDeUsuario) {
   return await obtenerPorUsername(nombreDeUsuario)
 
