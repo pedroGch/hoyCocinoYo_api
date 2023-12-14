@@ -2,6 +2,7 @@ import express from 'express'
 import {checkAuth} from '../middlewares/auth.middleware.js'
 import {valInicioSesion} from '../middlewares/login.middlewares.js'
 import {usernameExiste,emailExiste,valUsuariRegistro} from '../middlewares/usuarios.middlewares.js'
+import {resetPassSchema,forgotPassSchema} from '../middlewares/resetPass.middleware.js'
 import {iniciarSesionUsuario,registrarUsuario,desloguear} from "../controllers/usuarios.controllers.js"
 import {recetasPorUsuario} from "../controllers/recetas.controllers.js"
 import {forgotPassword} from '../controllers/forgotPassword.controllers.js'
@@ -17,7 +18,7 @@ routerUsuarios.post('/cerrar-sesion',[checkAuth] ,desloguear)
 
 routerUsuarios.get('/:id/recetas', recetasPorUsuario)
 
-routerUsuarios.get('/recuperar-password', forgotPassword)
+routerUsuarios.get('/recuperar-password',[forgotPassSchema], forgotPassword)
 
-routerUsuarios.post('/restituir-password/:id/:token', resetPassword)
+routerUsuarios.post('/restituir-password/:id/:token',[resetPassSchema], resetPassword)
 
