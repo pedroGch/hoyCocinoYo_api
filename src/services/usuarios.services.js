@@ -113,3 +113,12 @@ export async function eliminarSesion(token){
   await cliente.connect()
   return await tokenCollection.deleteOne({token: token})
 }
+
+/**
+ * 
+ * 
+ */
+export async function editarUsuario(id, data){
+  await cliente.connect()
+  return await usuarioCollection.updateOne({_id: new ObjectId(id)}, { $set: {...data}})
+}
