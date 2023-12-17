@@ -122,3 +122,14 @@ export async function editarUsuario(id, data){
   await cliente.connect()
   return await usuarioCollection.updateOne({_id: new ObjectId(id)}, { $set: {...data}})
 }
+
+/**
+ * 
+ * 
+ */
+export async function editarPassword(id, data){
+  await cliente.connect()
+  const hashedPassword = bcrypt.hashSync(data.password, parseInt(process.env.HASNUMBER))
+  data.password = hashedPassword
+  return await usuarioCollection.updateOne({_id: new ObjectId(id)}, { $set: {...data}})
+}
