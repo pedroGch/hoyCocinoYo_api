@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer'
 import jwt from 'jsonwebtoken'
 import { obtenerPorEmail, editarUsuario } from '../services/usuarios.services.js'
 import 'dotenv/config'
-//TODO: antes de llegar acá hay que checkear que se haya ingresado un email
+
 export async function forgotPassword (req, res) {
   const email =  req.body.email;
   const usuario = await obtenerPorEmail(email)
