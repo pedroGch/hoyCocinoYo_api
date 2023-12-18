@@ -40,13 +40,14 @@ export async function recetasPorUsuario(req, res) {
 export async function nuevaReceta(req, res) {
   try {
     let imagen_ruta = "receta-predeterminada.jpg";
+
     if (req.body.imagen_ruta) {
       imagen_ruta = req.body.imagen_ruta;
     }
 
     const nuevaRecetaCreada = await crearReceta({
       ...req.body,
-      imagen_ruta: imagen_ruta,
+      imagen_ruta,
       alt: 'Receta de ' + req.body.nombre,
     });
 
