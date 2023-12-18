@@ -30,7 +30,7 @@ export async function forgotPassword (req, res) {
     from: 'un email',
     to: `${usuario.email}`,
     subject: 'recuperar contraseña',
-    text: `http://127.0.0.1:${emailPort}/api/v1/usuarios/restituirPassword/${usuario._id}/${token}`
+    text: `http://localhost:5173/${usuario._id}/${token}/reset-password`
   }
 
   transporter.sendMail(mailOptions, (err, response) => {
