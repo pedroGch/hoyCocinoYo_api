@@ -6,6 +6,7 @@ import {resetPassSchema,forgotPassSchema} from '../middlewares/resetPass.middlew
 import {iniciarSesionUsuario,registrarUsuario,desloguear} from "../controllers/usuarios.controllers.js"
 import {recetasPorUsuario} from "../controllers/recetas.controllers.js"
 import {forgotPassword} from '../controllers/forgotPassword.controllers.js'
+import {resetPassword} from '../controllers/resetPassword.controllers.js'
 
 export const routerUsuarios = express()
 
@@ -17,7 +18,7 @@ routerUsuarios.post('/cerrar-sesion',[checkAuth] ,desloguear)
 
 routerUsuarios.get('/:id/recetas', recetasPorUsuario)
 
-routerUsuarios.get('/recuperar-password',[forgotPassSchema], forgotPassword)
+routerUsuarios.post('/recuperar-password',[forgotPassSchema], forgotPassword)
 
-routerUsuarios.post('/restituir-password/:id/:token',[resetPassSchema])
+routerUsuarios.post('/:id/:token/restituir-password',[resetPassSchema], resetPassword)
 
