@@ -1,5 +1,6 @@
 import express from "express";
 import multer from "multer";
+import { v4 as uuidv4 } from "uuid";
 import { valRecetaCrear } from "../middlewares/receta.middlewares.js";
 import { checkAuth } from "../middlewares/auth.middleware.js";
 import {
@@ -15,8 +16,9 @@ const storage = multer.diskStorage({
     cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
-    const uniqueName = Date.now() + "-" + file.originalname;
+    const uniqueName = `${uuidv4()}.${file.originalname.split(".").pop()}`;
     cb(null, uniqueName);
+    req.body.imagen_ruta = uniqueName;
   },
 });
 
