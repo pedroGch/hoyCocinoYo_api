@@ -81,7 +81,7 @@ export function quitarReceta(req, res) {
   const idUsuario = req.params.idUsuario
   eliminarReceta(idUsuario, id_receta)
   .then(respuesta =>{
-
+    console.log(respuesta);
     res.status(200).json(respuesta)
   })
   .catch(err =>{

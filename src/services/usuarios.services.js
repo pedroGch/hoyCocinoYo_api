@@ -141,13 +141,13 @@ export async function almacenarReceta(idUser, data) {
 
 export async function eliminarReceta(idUser, idReceta) {
   await cliente.connect()
-  const update = { $pull: { mis_recetas: { id_receta: idReceta } } }
-
-  const respuesta = await usuarioCollection.updateOne({ _id: ObjectId(idUser) }, update)
+  const usuario = await usuarioCollection.findOne({_id: new ObjectId(idUser)})  
+  const nuevoArrRecetas = usuario.mis_recetas.filter(receta => receta.id_receta !== idReceta);
+  const respuesta = await usuarioCollection.updateOne({_id: new ObjectId(idUser)}, { $set: {mis_recetas: nuevoArrRecetas}})
   return respuesta
 }
 
-favoritos
+
 export async function favoritos(idUser) {
   await cliente.connect()
   return await usuarioCollection.findOne({_id: new ObjectId(idUser)})
