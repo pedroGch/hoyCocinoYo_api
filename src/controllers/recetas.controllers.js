@@ -49,6 +49,7 @@ export async function nuevaReceta(req, res) {
       ...req.body,
       imagen_ruta,
       alt: 'Receta de ' + req.body.nombre,
+      cantMeGusta : 0,
     });
 
     res.status(200).json(nuevaRecetaCreada);
