@@ -8,7 +8,8 @@ import {
   eliminarSesion,
   iniciarSesion,
   almacenarReceta,
-  eliminarReceta
+  eliminarReceta,
+  favoritos
 } from '../services/usuarios.services.js'
 
 export  async function registrarUsuario (req, res) {
@@ -79,6 +80,18 @@ export function quitarReceta(req, res) {
   const id_receta = req.params.idReceta
   const idUsuario = req.params.idUsuario
   eliminarReceta(idUsuario, id_receta)
+  .then(respuesta =>{
+
+    res.status(200).json(respuesta)
+  })
+  .catch(err =>{
+    res.status(500).json(err)
+  })
+}
+
+export function misRecetaFavoritas(req, res) {
+  const idUsuario = req.params.idUsuario
+  favoritos(idUsuario)
   .then(respuesta =>{
 
     res.status(200).json(respuesta)

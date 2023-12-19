@@ -146,3 +146,9 @@ export async function eliminarReceta(idUser, idReceta) {
   const respuesta = await usuarioCollection.updateOne({ _id: ObjectId(idUser) }, update)
   return respuesta
 }
+
+favoritos
+export async function favoritos(idUser) {
+  await cliente.connect()
+  return await usuarioCollection.findOne({_id: new ObjectId(idUser)})
+}
