@@ -6,7 +6,9 @@ import {
   obtenerPorUsername, 
   obtenerPorEmail,
   eliminarSesion,
-  iniciarSesion
+  iniciarSesion,
+  almacenarReceta,
+  eliminarReceta
 } from '../services/usuarios.services.js'
 
 export  async function registrarUsuario (req, res) {
@@ -55,4 +57,33 @@ export async function nombreDeUsuarioExiste (nombreDeUsuario) {
 
 export async function emailUsuarioExiste (emailUsuario) {
   return await obtenerPorEmail(emailUsuario)
+}
+
+export function guardarReceta(req, res) {
+  const receta = {
+    id_receta: req.params.idReceta,
+    nombre_receta : req.body.nombre_receta
+  }
+  const idUsuario = req.params.idUsuario
+  almacenarReceta(idUsuario, receta)
+  .then(respuesta =>{
+
+    res.status(200).json(respuesta)
+  })
+  .catch(err =>{
+    res.status(500).json(err)
+  })
+}
+
+export function quitarReceta(req, res) {
+  const id_receta = req.params.idReceta
+  const idUsuario = req.params.idUsuario
+  eliminarReceta(idUsuario, id_receta)
+  .then(respuesta =>{
+
+    res.status(200).json(respuesta)
+  })
+  .catch(err =>{
+    res.status(500).json(err)
+  })
 }

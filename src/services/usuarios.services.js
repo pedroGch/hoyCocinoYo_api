@@ -133,3 +133,16 @@ export async function editarPassword(id, data){
   data.password = hashedPassword
   return await usuarioCollection.updateOne({_id: new ObjectId(id)}, { $set: {...data}})
 }
+
+export async function almacenarReceta(idUser, data) {
+  await cliente.connect()
+  return await usuarioCollection.updateOne({_id: new ObjectId(idUser)}, {$push: {mis_recetas : data}})
+}
+
+export async function eliminarReceta(idUser, idReceta) {
+  await cliente.connect()
+  const update = { $pull: { mis_recetas: { id_receta: idReceta } } }
+
+  const respuesta = await usuarioCollection.updateOne({ _id: ObjectId(idUser) }, update)
+  return respuesta
+}
